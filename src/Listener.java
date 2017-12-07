@@ -26,11 +26,11 @@ public class Listener {
         sync.send("".getBytes(), 0);
 
         // Get updates, expect random Ctrl-C death
-        subscriber.recv(0);
         
         String msg = "";
         try {
 			Robot robot = new Robot();
+			
 	        while (!msg.equalsIgnoreCase("END")) {
 
 	            msg = new String(subscriber.recv(0));
