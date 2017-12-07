@@ -1,4 +1,5 @@
 import org.zeromq.*;
+import com.google.gson.*;
 
 
 public class Listener {
@@ -20,10 +21,20 @@ public class Listener {
         sync.send("".getBytes(), 0);
 
         // Get updates, expect random Ctrl-C death
+        subscriber.recv(0);
+        
         String msg = "";
         while (!msg.equalsIgnoreCase("END")) {
+
             msg = new String(subscriber.recv(0));
-            System.out.println(msg);
+        	Gson gson = new Gson();
+        	Event event = gson.fromJson(msg, Event.class);
+        	
+        	if(event.getType()=="Gesture"){
+        		
+        	}
+        	
+            System.out.println(event.getParameters().getName());
 
 	}
 	}
