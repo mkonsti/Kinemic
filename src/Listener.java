@@ -21,12 +21,11 @@ public class Listener {
         ZMQ.Socket sync = context.socket(ZMQ.PUSH);
 
         subscriber.subscribe("".getBytes());
-        subscriber.connect("tcp://192.168.100.100:9999");
-        sync.connect("tcp://192.168.100.100:9999");
+        subscriber.connect("tcp://129.13.82.251:9999");
+        sync.connect("tcp://129.13.82.251:9999");
         sync.send("".getBytes(), 0);
 
         // Get updates, expect random Ctrl-C death
-        
         String msg = "";
         try {
 			Robot robot = new Robot();
@@ -36,13 +35,14 @@ public class Listener {
 	            msg = new String(subscriber.recv(0));
 	        	Gson gson = new Gson();
 	        	Event event = gson.fromJson(msg, Event.class);
+
 	        	
 	        	if(event.getType().equals("Gesture")){
-        			System.out.println("Gesture");
+        			System.out.println("Gesture");     			
 	        		if(event.getParameters().getName().equals("Swipe R")){
 	        			System.out.println("Right Swipe");
-	        			robot.keyPress(KeyEvent.VK_RIGHT);
-	        			robot.keyRelease(KeyEvent.VK_RIGHT);
+	        			robot.keyPress(KeyEvent.VK_ENTER);
+	        			robot.keyRelease(KeyEvent.VK_ENTER);
 	        		}else if(event.getParameters().getName().equals("Swipe L")){
 	        			System.out.println("Left Swipe");
 	        			robot.keyPress(KeyEvent.VK_LEFT);
@@ -51,7 +51,24 @@ public class Listener {
 	        			System.out.println("Check Mark");
 	        			robot.keyPress(KeyEvent.VK_ENTER);
 	        			robot.keyRelease(KeyEvent.VK_ENTER);
+	        		}else if(event.getParameters().getName().equals("X Mark")){
+	        			System.out.println("X Mark");
+	        			robot.keyPress(KeyEvent.VK_TAB);
+	        			robot.keyRelease(KeyEvent.VK_TAB);
+	        			robot.keyPress(KeyEvent.VK_TAB);
+	        			robot.keyRelease(KeyEvent.VK_TAB);
+	        			robot.keyPress(KeyEvent.VK_ENTER);
+	        			robot.keyRelease(KeyEvent.VK_ENTER);
+	        		}else if(event.getParameters().getName().equals("Rotate RL")){
+	        			System.out.println("Rotate RL");
+	        			robot.keyPress(KeyEvent.VK_TAB);
+	        			robot.keyRelease(KeyEvent.VK_TAB);
 	        		}
+	        		
+
+	        		
+	        		
+	        		
 	        	}
 	        	
 	            System.out.println(msg);
